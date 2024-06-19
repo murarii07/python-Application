@@ -1,12 +1,7 @@
 import os,requests,datetime,dotenv
-from flask import Flask,render_template,request,redirect,session
-from src.models import init_app,register_user,find_user
+from flask import Flask,render_template,request
 dotenv.load_dotenv()
 app = Flask(__name__)
-app.config['MONGO_URI']=os.getenv('MONGO_URI')
-
-#to connect with mongo
-init_app(app)
 #to add session variables we need to add secretkey
 app.secret_key=os.getenv('KEY')
 @app.route("/")
@@ -34,10 +29,6 @@ def abut():
 
 @app.route('/news', methods=['GET'])
 def news():
-    if 'username'  in  session:
-        print(session['username'])
-        return render_template('news.html',username=session["username"])
-    else:
         return render_template('news.html',)
 
 @app.route('/news/ans',methods=['POST'])
@@ -59,30 +50,3 @@ def news_ans():
            return x['url']!='https://removed.com'
    artci=list(filter(func,artci))
    return {'status':200,"value":artci}
-@app.route('/login')
-def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-@app.route('/login',methods=['POST'])
-def logged():
-    username,password = request.form.get('username'),request.form.get('password')
-    res=find_user(username,password)
-    print(res)
-    if(res):
-        session['username'] = username
-        return redirect("/news")
-    else:
-        return f" username or passowrd is not valid"
-
-@app.route("/register" ,methods=['POST','GET'])
-def register():
-    if request.method == 'POST':
-        username,password = request.form.get('username'),request.form.get('password')
-        res=register_user(username,password)
-        if(res):
-            return redirect("/login")
-        else:
-            return f" username or passowrd is not valid"
-    else:
-        return render_template('register.html')
-    
