@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            color: aliceblue;
+        }
+
+        img {
+           width: 100%;
+         
+        }
+        body{
+            background-color: black;
+        }
+
+        .news,
+        button,
+        input,
+        a,
+        body {
+            color: black;
+        }
+
+        h3 {
+            color: red;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .list{
+            display: flex;
+            margin:10px 10px;
+            /* margin-top: 10px; */
+            width: 95%;
+            /* border: 3px solid wheat; */
+           flex-flow: wrap;
+           justify-content: center;
+        }
+        .news {
+            /* border: 3px solid wheat; */
+            background-color: rgba(255, 255, 255, 0.219);
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+            margin: 7px;
+            transition: transform 250ms ease-in-out 0s;
+            
+        }
+        h1{
+            color: azure;
+        }
+        ::-webkit-scrollbar{
+            display: none;
+        }
+        .news:hover{
+            background-color: rgba(255, 255, 255, 0.349);
+            transform: scale(1.1);
+        }
+        
+    </style>
+</head>
+
+<body>
+    <label for="image">image:</label>
+    <input type="text" name="key">
+    <button class="search">search</button>
+    <div class="list">
+        <h1>search  your interest news...</h1>
+    </div>
+    <script>
+        let rq = document.querySelector(".list");
+        let input = document.querySelector("input")
+        let btn = document.querySelector(".search")
+        btn.addEventListener("click", async () => {
+            if(input.value){
+                const datas = { "image": input.value }
+                let url="http://127.0.0.1:5000/news/ans" || "http://127.0.0.1:5000/news/ans" 
+                let res = await fetch("",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datas)
+                })
+            let data = await res.json()
+            console.log(data)
+            rq.innerText=""
+            for (const iterator of data.value) {
+                let r = document.createElement("div")
+                r.setAttribute("class", "news")
+                let desc = document.createElement("div")
+                let wr = document.createElement("h3")
+                let lin = document.createElement("a")
+                let img = document.createElement("img")
+                img.src = iterator['urlToImage']
+                img.alt="404"
+                lin.appendChild(img)
+                lin.href = iterator['url']
+                
+                wr.innerText = iterator['title']
+                desc.innerText = iterator['description']
+                r.append(wr, lin, desc)
+                rq.appendChild(r)
+            }
+            input.value=""
+        }
+        })
+
+    </script>
+</body>
+
+</html>
