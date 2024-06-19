@@ -85,7 +85,7 @@
             if(input.value){
                 const datas = { "image": input.value }
                 let url="http://127.0.0.1:5000/news/ans" || "http://127.0.0.1:5000/news/ans" 
-                let res = await fetch("",
+                let res = await fetch(url,
                 {
                     method: "POST",
                     headers: {

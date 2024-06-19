@@ -1,6 +1,9 @@
+import os
 from flask import Flask,render_template,request
 import requests
 import datetime
+import dotenv
+dotenv.load_dotenv()
 app = Flask(__name__)
 
 @app.route("/")
@@ -17,7 +20,7 @@ def abut():
     files = {
         'prompt': (None, request.form.get('image'), 'text/plain')
     },
-    headers = { 'x-api-key': "b2674062e26834c1fff13d8d8db474fa09bec81d2973c0ba994e48293a11181d4037a33ac32f8930dd5d3f9f7d2803a9"
+    headers = { 'x-api-key': os.getenv('X_API_KEY')
                })
     if (r.ok):
         with open('./src/static/df.png','wb') as fp:
@@ -32,23 +35,20 @@ def news():
 
 @app.route('/news/ans',methods=['POST'])
 def news_ans():
-   API_KEY='561704f71a4043e5afd063d95f7486bb'
+   API_KEY=os.getenv("NEWS_API_KEY")
    data=request.get_json()
-   print(data)
    q=data['image']
    today=datetime.datetime.now()
    todays=today.strftime("%Y-%m-%d")
    
    # Calculate yesterday's date by subtracting one day
    fromdate= today - datetime.timedelta(days=3)
-   
    fromdate = fromdate.strftime("%Y-%m-%d")
-   print(fromdate)
+#    print(fromdate)
    r=requests.get(f'https://newsapi.org/v2/everything?q={q}&language=en&from={fromdate}&to={todays}&apiKey={API_KEY}')
    obj=r.json()
    artci=obj['articles']
    def func(x):
            return x['url']!='https://removed.com'
-
    artci=list(filter(func,artci))
    return {'status':200,"value":artci}
