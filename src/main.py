@@ -8,7 +8,7 @@ app.secret_key=os.getenv('KEY')
 def hello_world():  
     return render_template('index.html')
 
-@app.route("/apii")
+@app.route("/api")
 def about():
     return render_template('api.html')
 
