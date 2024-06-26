@@ -13,4 +13,4 @@ COPY ./src /workspace/src
 
 EXPOSE 5000
 #cmd to run the app
-CMD ["flask","--app","./src/main", "run", "--host", "0.0.0.0", "--port", "5003"]
+CMD ["flask","--app","./src/main", "run", "--host", "0.0.0.0", "--port", "8000"]
