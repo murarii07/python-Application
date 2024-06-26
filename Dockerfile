@@ -6,7 +6,7 @@ WORKDIR /workspace
 COPY  ./requirements.txt /workspace/requirements.txt
 
 #installing package
-RUN  pip install  -r /workspace/requirements.txt 
+RUN  pip install --no-cache-dir --upgrade  -r /workspace/requirements.txt 
 RUN pip install python-dotenv
 # COPY source dest
 COPY ./src /workspace/src 
