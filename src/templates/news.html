@@ -88,7 +88,9 @@
         btn.addEventListener("click", async () => {
             if (input.value) {
                 const datas = { "image": input.value }
-              let url=`${location.hostname}:5000/news/ans`
+                const hostname=location.host
+              let url=`http://${hostname}/news/ans`
+              console.log(location.hostname)
                 let res = await fetch(url,
                     {
                         method: "POST",
